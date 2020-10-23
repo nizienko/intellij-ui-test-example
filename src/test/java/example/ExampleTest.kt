@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent
 class ExampleTest {
 
     @Test
-    fun createProject() {
+    fun openAboutFromWelcomeScreen() {
         val robot = RemoteRobot("http://127.0.0.1:8082")
         robot.find<ComponentFixture>(byXpath("//div[@text = 'Get Help']")).click()
 
