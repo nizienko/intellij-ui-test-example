@@ -27,7 +27,7 @@ class EditorExampleTest {
         // click on the right from text
         // we can get point of offset
         val offset = editor.text.indexOf("world") + "world".length
-        val point = editor.findPointByOffset(offset) // point of the end of 'println'
+        val point = editor.findPointByOffset(offset) // point of the end of 'Hello world'
         editor.click(point)
         assert(editor.caretOffset == offset)
 
@@ -47,13 +47,13 @@ fun ui(test: RemoteRobot.() -> Unit) {
 @DefaultXpath("type", "//div[@class='EditorComponentImpl']")
 class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) : ContainerFixture(remoteRobot, remoteComponent) {
     val text: String
-        get() = callJs<String>("component.getEditor().getDocument().getText()", true)
+        get() = callJs("component.getEditor().getDocument().getText()", true)
 
     val selectedText: String
-        get() = callJs<String>("component.getEditor().getSelectionModel().getSelectedText()", true)
+        get() = callJs("component.getEditor().getSelectionModel().getSelectedText()", true)
 
     val caretOffset: Int
-        get() = callJs<Int>("component.getEditor().getCaretModel().getOffset()", runInEdt = true)
+        get() = callJs("component.getEditor().getCaretModel().getOffset()", runInEdt = true)
 
     fun findPointByOffset(offset: Int): Point {
         return callJs("""
@@ -74,7 +74,9 @@ class EditorFixture(remoteRobot: RemoteRobot, remoteComponent: RemoteComponent) 
             const visualPosition = editor.offsetToVisualPosition(offset)
             editor.visualPositionToXY(visualPosition)
         """, runInEdt = true)
+        // wait a bit for scroll completed
         Thread.sleep(500)
+
         click(pointToClick)
     }
 }
